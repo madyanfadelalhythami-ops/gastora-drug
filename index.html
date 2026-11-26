@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102b49">
+<title>GASTORA DRUG</title>
+<style>
+:root{--navy:#102b49;--teal:#19a9b8;--cyan:#35c4d8;--bg:#f3f7fa;--card:#fff;--txt:#17324b;--muted:#718397;--line:#e3ebf1}
+[data-theme=dark]{--bg:#0d1b2a;--card:#14283c;--txt:#eaf3f8;--muted:#a8bac8;--line:#294156}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font-family:Tahoma,Arial,sans-serif}
+header{background:linear-gradient(130deg,#102b49,#14566d);color:white;padding:22px 18px 28px;border-radius:0 0 25px 25px}
+.top{display:flex;align-items:center;justify-content:space-between}.brand{font-weight:800;letter-spacing:.5px;font-size:21px}.settings{border:1px solid #ffffff55;background:#ffffff16;color:white;border-radius:12px;padding:10px 13px;font-size:18px}
+h1{font-size:22px;margin:24px 0 6px}.sub{color:#c9e3ed;font-size:13px}
+.search{margin:18px auto 0;max-width:720px;display:flex;background:white;border-radius:15px;padding:5px 12px;align-items:center;gap:8px}
+.search input{border:0;outline:0;flex:1;padding:13px 4px;font-size:15px;color:#17324b;background:transparent}
+main{max-width:900px;margin:auto;padding:20px 16px}.section-title{font-size:17px;font-weight:bold;margin:5px 0 13px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tile,.panel{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:17px;box-shadow:0 4px 16px #18334b0a}
+.tile{min-height:112px;text-align:right;color:var(--txt);cursor:pointer}.tile .ico{font-size:25px;color:var(--teal);display:block;margin-bottom:10px}.tile b{font-size:15px}.tile small{display:block;color:var(--muted);margin-top:6px;font-size:12px}
+.panel{margin-top:16px}.hidden{display:none!important}.row{display:flex;justify-content:space-between;align-items:center;gap:8px}.back{border:0;background:#e5f5f7;color:#087d8c;padding:9px 13px;border-radius:10px;font-weight:bold}
+.drug{padding:14px 4px;border-bottom:1px solid var(--line);cursor:pointer}.drug:last-child{border:0}.drug strong{display:block}.drug small{color:var(--muted)}
+.tag{display:inline-block;background:#e5f7f8;color:#087d8c;border-radius:20px;padding:5px 9px;font-size:11px;margin:7px 0}
+.field{margin:13px 0}.field h3{font-size:14px;margin:0 0 5px}.field p{margin:0;color:var(--muted);line-height:1.7;font-size:13px}
+select,button{font:inherit}select{padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--txt)}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
+@media(min-width:650px){.grid{grid-template-columns:repeat(2,1fr)}main{padding-top:26px}.tile{padding:22px}}
+</style></head>
+<body>
+<header><div class="top"><div class="brand">GASTORA DRUG</div><button class="settings" onclick="show('settings')">الإعدادات</button></div>
+<h1>الدليل الدوائي الشامل</h1><div class="sub">ابحث واكتشف المعلومات الدوائية</div>
+<div class="search"><span>⌕</span><input id="q" placeholder="ابحث بالاسم العلمي للدواء..." oninput="searchDrugs()"></div></header>
+<main>
+<section id="home">
+<div class="section-title">استكشف الدليل</div>
+<div class="grid">
+<button class="tile" onclick="show('list')"><span class="ico">▤</span><b>قائمة الأدوية</b><small>تصفح الأدوية المتاحة</small></button>
+<button class="tile" onclick="show('categories')"><span class="ico">◈</span><b>التصنيفات الدوائية</b><small>استكشف حسب التصنيف</small></button>
+<button class="tile" onclick="show('recent')"><span class="ico">◷</span><b>آخر عمليات البحث</b><small>الأدوية التي اطلعت عليها</small></button>
+<button class="tile" onclick="show('about')"><span class="ico">ⓘ</span><b>حول الدليل</b><small>مصادر البيانات والتنبيهات</small></button>
+</div><div class="panel"><div class="row"><b>قاعدة البيانات</b><span id="dbstatus" class="tag">بيانات تجريبية</span></div><p style="color:var(--muted);font-size:12px">هذه نسخة بداية للواجهة. أضف قاعدة بيانات موثقة عند تجهيزها.</p></div>
+</section>
+<section id="list" class="hidden panel"><div class="row"><b>قائمة الأدوية</b><button class="back" onclick="show('home')">الرئيسية</button></div><div id="druglist"></div></section>
+<section id="detail" class="hidden panel"><div class="row"><b>بيانات الدواء</b><button class="back" onclick="show('list')">رجوع</button></div><div id="detailbody"></div></section>
+<section id="categories" class="hidden panel"><div class="row"><b>التصنيفات الدوائية</b><button class="back" onclick="show('home')">الرئيسية</button></div><p>سيتم تفعيل التصنيفات عند استيراد قاعدة البيانات الموثقة.</p></section>
+<section id="recent" class="hidden panel"><div class="row"><b>آخر عمليات البحث</b><button class="back" onclick="show('home')">الرئيسية</button></div><div id="recentlist"></div></section>
+<section id="about" class="hidden panel"><div class="row"><b>حول الدليل</b><button class="back" onclick="show('home')">الرئيسية</button></div><p>GASTORA DRUG دليل تعليمي للمعلومات الدوائية. لا يغني عن النشرات الرسمية أو الحكم السريري.</p></section>
+<section id="settings" class="hidden panel"><div class="row"><b>الإعدادات</b><button class="back" onclick="show('home')">الرئيسية</button></div>
+<div class="field"><h3>المظهر</h3><select onchange="document.documentElement.dataset.theme=this.value"><option value="light">نهاري</option><option value="dark">ليلي</option></select></div>
+<div class="field"><h3>حجم الخط</h3><select onchange="document.body.style.zoom=this.value"><option value="1">عادي</option><option value="1.05">كبير</option><option value="1.1">أكبر</option></select></div>
+<div class="field"><h3>قاعدة البيانات</h3><p>سيتم ربط التنزيل والتحديث التلقائي بعد نشر ملف قاعدة البيانات الموثقة على الاستضافة.</p></div>
+</section>
+</main><footer>GASTORA DRUG · دليل دوائي تعليمي</footer>
+<script>
+const drugs=[
+{name:"Amoxicillin",ar:"أموكسيسيلين",class:"مضاد حيوي من البنسلينات",note:"معلومات تعريفية تجريبية فقط؛ راجع النشرة الرسمية لتفاصيل الاستعمال والجرعات."},
+{name:"Paracetamol",ar:"باراسيتامول",class:"مسكن وخافض للحرارة",note:"معلومات تعريفية تجريبية فقط؛ الجرعة تعتمد على العمر والحالة والتركيز."},
+{name:"Omeprazole",ar:"أوميبرازول",class:"مثبط مضخة البروتون",note:"معلومات تعريفية تجريبية فقط؛ راجع النشرة الرسمية والتداخلات الدوائية."},
+{name:"Metformin",ar:"ميتفورمين",class:"من أدوية خفض سكر الدم",note:"معلومات تعريفية تجريبية فقط؛ يلزم تقييم وظائف الكلى والحالة السريرية."}
+];
+let recent=[];
+function show(id){document.querySelectorAll("main>section").forEach(s=>s.classList.add("hidden"));document.getElementById(id).classList.remove("hidden");if(id==="list")renderList(drugs);if(id==="recent")renderRecent();}
+function renderList(items){document.getElementById("druglist").innerHTML=items.map(d=>`<div class="drug" onclick="detail('${d.name}')"><strong>${d.name}</strong><small>${d.ar} · ${d.class}</small></div>`).join("")||"<p>لا توجد نتائج.</p>";}
+function searchDrugs(){let q=document.getElementById("q").value.toLowerCase();if(q){show("list");renderList(drugs.filter(d=>(d.name+" "+d.ar).toLowerCase().includes(q)));}}
+function detail(name){let d=drugs.find(x=>x.name===name);recent=[name,...recent.filter(x=>x!==name)].slice(0,10);document.getElementById("detailbody").innerHTML=`<h2>${d.name}</h2><div class="tag">${d.class}</div><div class="field"><h3>الاسم العربي</h3><p>${d.ar}</p></div><div class="field"><h3>ملاحظات</h3><p>${d.note}</p></div><div class="field"><h3>المراجع</h3><p>لم تتم إضافة مرجع سريري لهذا السجل التجريبي.</p></div>`;show("detail");}
+function renderRecent(){document.getElementById("recentlist").innerHTML=recent.map(n=>`<div class="drug" onclick="detail('${n}')">${n}</div>`).join("")||"<p>لا توجد عمليات بحث بعد.</p>";}
+renderList(drugs);
+</script></body></html>

@@ -1,0 +1,8 @@
+{
+  "app": "GASTORA DRUG",
+  "dataset_version": "0.1-demo",
+  "dataset_file": "drugs.json",
+  "status": "demo_only",
+  "updated_at": "2026-11-26",
+  "note": "Demo data only; replace with reviewed, licensed dataset before production."
+}
